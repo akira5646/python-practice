@@ -1,0 +1,3 @@
+1、把需要验证的密码列表按照模板格式复制进file文件夹下的test.xlsx红
+2、启动password_check.exe
+3、等待控制台窗口消失，在file目录下生成结果表output.xlsx
