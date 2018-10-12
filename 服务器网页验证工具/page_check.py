@@ -6,6 +6,7 @@ import os
 import configparser
 
 logger = logging.getLogger('page')
+
 logger.setLevel(logging.DEBUG)
 fh = logging.FileHandler('page_check.log')
 fh.setLevel(logging.DEBUG)
@@ -19,6 +20,7 @@ logger.addHandler(ch)
 config = configparser.ConfigParser()
 config.read('config.ini',"utf-8-sig")
 url = config['page']['url']
+kill = config['page']['kill']
 restart = config['page']['restart']
 timer = int(config['page']['timer'])
 
@@ -29,12 +31,20 @@ def check_baseline():
         if code == 200:
             logger.info(f'url:{url};-the result is :{code},连接正常')
         else:
-            logger.info(f'-未连上页面，执行{restart}')
-            os.system(restart)
+            logger.info(f'-未连上页面code:{code},执行{kill}')
+            result = os.popen(kill)
+            for line in result.read().splitlines():  
+                logger.info(line)
+            logger.info(f'执行{restart}')
+            result2 = os.popen(restart)
+            for line in result.read().splitlines():  
+                logger.info(line)
     except Exception as e:
         print(e)
         logger.info(f'-未连上页面，执行{restart}')
-        os.system(restart)
+        result = os.popen(restart)
+        for line in result.read().splitlines():  
+            logger.info(line)
     finally:
         if 1:
             threading.Timer(timer, check_baseline).start()
