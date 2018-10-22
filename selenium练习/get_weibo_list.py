@@ -91,7 +91,7 @@ if __name__ == '__main__':
     with ThreadPoolExecutor(max_workers=10) as threadpool:
         # 多线程执行函数pr(n),map有序
         # results = list(threadpool.map(get_weibos_by_page,range(2,math.ceil(total/10))))
-        results = list(threadpool.map(get_weibos_by_page,range(2,1000)))
+        results = list(threadpool.map(get_weibos_by_page,range(2,500)))
         # 拼接第一页和剩余微博
         weibos = list(results_page1) + sum(list(map(list , results)),[])
     write_weibo_info(weibos)
